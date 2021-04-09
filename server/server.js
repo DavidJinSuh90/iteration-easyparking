@@ -5,9 +5,9 @@ const path = require('path');
 const db = require('./Models/ParkingSpotModels.js');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const dotenv = require ('dotenv');
 
-// const dotenv = require ('dotenv');
-// dotenv.config()
+dotenv.config()
 
 
 // Controllers
@@ -28,7 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // initialize passport?
 // app.use(passport.initialize());
-
 
 // Serve static file build route
 app.use('/build', express.static(path.join(__dirname, '../build')));
@@ -71,20 +70,20 @@ app.use('/user', userRouter);
 //   credentials (in this case, an accessToken, refreshToken, and Google
 //   profile), and invoke a callback with a user object.
 
-// passport.use(new GoogleStrategy({
-//   clientID: process.env.CLIENT_ID,
-//   clientSecret: process.env.CLIENT_SECRET,
-//   callbackURL: "http://localhost:3000/auth/google/callback"
-//   // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-// },
-// function(accessToken, refreshToken, profile, done) {
-//     console.log(profile);
-//     // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//     //   return done(null, false);
-//     // });
-//     return done(null, profile);
-//   }
-// ));
+passport.use(new GoogleStrategy({
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/callback"
+  // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+function(accessToken, refreshToken, profile, done) {
+    console.log(profile);
+    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //   return done(null, false);
+    // });
+    return done(null, profile);
+  }
+));
 
 
 // GET /auth/google
